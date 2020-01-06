@@ -58,9 +58,14 @@ public enum ResultCode {
      */
     NOT_FOUND(404, "访问地址不存在"),
     /**
+     * 存在相同学校
+     */
+    ZHIYUAN_ERROR(522, "存在相同学校"),
+    /**
      * 未知的错误
      */
     UNKNOWN_ERROR(500, "未知错误");
+
 
     private ResultCode(Integer code, String message) {
         this.code = code;

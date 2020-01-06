@@ -64,7 +64,7 @@ public class TokenFilter extends HttpFilter {
 
                 //设置每个controller的权限
                 if ("/user".equals(request.getServletPath())) {
-                    if (!"admin".equals(role) && !"student".equals(role) && !"school".equals(role)) {
+                    if (!"ksy".equals(role) && !"student".equals(role) && !"school".equals(role)) {
                         response.getWriter().write(new ObjectMapper().writeValueAsString(new JsonResult<>(ResultCode.NO_AUTH)));
                         return;
                     }

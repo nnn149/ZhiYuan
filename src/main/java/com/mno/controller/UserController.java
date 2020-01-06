@@ -16,7 +16,9 @@ import com.mno.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +31,7 @@ import java.util.Map;
  */
 public class UserController extends BaseServlet {
     private UserService userService = FactoryService.getUserService();
+
     public JsonResult info(HttpServletRequest req, HttpServletResponse resp) {
         Integer userId = (Integer) req.getSession().getAttribute("userId");
         User user = userService.getOneById(userId);
@@ -36,7 +39,14 @@ public class UserController extends BaseServlet {
         info.put("introduction", user.getNickname());
         info.put("avatar", "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         info.put("name", user.getUsername());
-        info.put("roles", user.getRole());
+        List<String> list = new ArrayList<>();
+        list.add(user.getRole());
+        info.put("roles", list);
         return new JsonResult<>(info);
+    }
+
+    public JsonResult schools(HttpServletRequest req, HttpServletResponse resp) {
+        List<User> school = userService.getListByRole("school");
+        return new JsonResult<>(school);
     }
 }

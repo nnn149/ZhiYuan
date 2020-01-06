@@ -14,7 +14,7 @@ import com.mno.bean.JsonResult;
 import com.mno.bean.PageBean;
 import com.mno.bean.ResultCode;
 import com.mno.bean.vo.VoluntaryListVo;
-import com.mno.model.Voluntary;
+import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.service.FactoryService;
 import com.mno.service.VoluntaryService;
 import com.mysql.cj.util.StringUtils;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -44,6 +45,12 @@ public class VoluntaryController extends BaseServlet {
         return new JsonResult(new PageBean<>(1, list));
     }
 
+    public JsonResult info(HttpServletRequest req, HttpServletResponse resp) {
+        Integer userId = Integer.parseInt(req.getParameter("userId"));
+        VoluntaryUpdateVo infoByUserId = voluntaryService.getInfoByUserId(userId);
+        return new JsonResult(infoByUserId);
+    }
+
     public JsonResult update(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Integer userId = (Integer) req.getSession().getAttribute("userId");
         String json = new String(req.getInputStream().readAllBytes());
@@ -51,8 +58,23 @@ public class VoluntaryController extends BaseServlet {
             return new JsonResult(ResultCode.PARAMS_ERROR);
         }
         ObjectMapper om = new ObjectMapper();
-        Voluntary voluntary = om.readValue(json, Voluntary.class);
+        VoluntaryUpdateVo voluntary = om.readValue(json, VoluntaryUpdateVo.class);
         voluntary.setUserId(userId);
+        List<Integer> schoolIds = voluntary.getSchoolIds();
+        boolean isC = false;
+        HashSet<Integer> hs = new HashSet<>();
+        for (Integer i : schoolIds) {
+            if (i == 0) {
+                continue;
+            }
+            if (!hs.add(i)) {
+                isC = true;
+                break;
+            }
+        }
+        if (isC) {
+            return new JsonResult(ResultCode.ZHIYUAN_ERROR);
+        }
         if (voluntaryService.update(voluntary)) {
             return new JsonResult();
         } else {

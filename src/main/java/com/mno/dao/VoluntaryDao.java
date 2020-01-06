@@ -27,4 +27,6 @@ public interface VoluntaryDao {
     boolean updateOne(Voluntary voluntary);
 
     boolean submit(int userId);
+
+    int getSchoolId(int speciality, int userId);
 }

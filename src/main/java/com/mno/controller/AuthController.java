@@ -55,4 +55,7 @@ public class AuthController extends BaseServlet {
         return new JsonResult(ResultCode.UNKNOWN_ERROR);
     }
 
+    public JsonResult logout(HttpServletRequest req, HttpServletResponse resp) {
+        return new JsonResult<>();
+    }
 }

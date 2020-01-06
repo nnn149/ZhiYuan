@@ -10,6 +10,7 @@
 package com.mno.service;
 
 import com.mno.bean.vo.VoluntaryListVo;
+import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.model.Voluntary;
 
 /**
@@ -26,5 +27,7 @@ public interface VoluntaryService {
     boolean update(Voluntary voluntary);
 
     boolean submit(int userId);
+
+    VoluntaryUpdateVo getInfoByUserId(int userId);
 
 }

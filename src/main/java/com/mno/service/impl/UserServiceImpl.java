@@ -15,6 +15,8 @@ import com.mno.model.User;
 import com.mno.service.UserService;
 import com.mno.util.JwtTokenUtil;
 
+import java.util.List;
+
 /**
  * DESC〈一句话功能简述〉<br>
  * 〈〉
@@ -40,6 +42,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getOneById(int id) {
         return userDao.getOneById(id);
+    }
+
+    @Override
+    public List<User> getListByRole(String role) {
+        return userDao.getListByRole(role);
     }
 
 }

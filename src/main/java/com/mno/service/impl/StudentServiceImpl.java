@@ -24,6 +24,7 @@ public class StudentServiceImpl implements StudentService {
         studentStuInfoVo.setMathScore(student.getMathScore());
         studentStuInfoVo.setEnglishScore(student.getEnglishScore());
         studentStuInfoVo.setMajorScore(student.getMajorScore());
+        studentStuInfoVo.setTotalScore(student.getTotalScore());
         studentStuInfoVo.setRank(student.getRank());
         studentStuInfoVo.setCounter(student.getCounter());
         studentStuInfoVo.setUserId(student.getUserId());

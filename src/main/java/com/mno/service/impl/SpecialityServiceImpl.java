@@ -16,7 +16,7 @@ public class SpecialityServiceImpl implements SpecialityService {
     }
 
     @Override
-    public List<Speciality> getListById(Integer id) {
-        return specialityDao.getListById(id);
+    public List<Speciality> getListById(Integer id,Integer userId) {
+        return specialityDao.getListById(id, userId);
     }
 }

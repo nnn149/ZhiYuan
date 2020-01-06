@@ -22,5 +22,5 @@ public interface SpecialityDao {
 
     boolean updateOne(Speciality speciality);
 
-    List<Speciality> getListById(Integer id);
+    List<Speciality> getListById(Integer id,Integer userId);
 }

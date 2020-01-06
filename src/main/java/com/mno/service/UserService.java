@@ -11,6 +11,8 @@ package com.mno.service;
 
 import com.mno.model.User;
 
+import java.util.List;
+
 /**
  * DESC〈一句话功能简述〉<br>
  * 〈〉
@@ -22,4 +24,5 @@ import com.mno.model.User;
 public interface UserService {
     String login(User user);
     User getOneById(int id);
+    List<User> getListByRole(String role);
 }

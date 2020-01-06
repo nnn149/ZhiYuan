@@ -1,7 +1,6 @@
 package com.mno.controller;
 
 import com.mno.bean.JsonResult;
-import com.mno.model.Speciality;
 import com.mno.service.FactoryService;
 import com.mno.service.SpecialityService;
 
@@ -18,7 +17,8 @@ public class SpecialityController extends BaseServlet {
     }
     public JsonResult infoById(HttpServletRequest req, HttpServletResponse resp) {
         Integer id = Integer.parseInt(req.getParameter("id"));
-        List list = specialityService.getListById(id);
+        Integer userId = Integer.parseInt(req.getParameter("userId"));
+        List list = specialityService.getListById(id, userId);
         return new JsonResult<>(list);
     }
 

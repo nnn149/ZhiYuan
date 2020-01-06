@@ -10,12 +10,16 @@
 package com.mno.service.impl;
 
 import com.mno.bean.vo.VoluntaryListVo;
+import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.dao.FactoryDao;
 import com.mno.dao.UserDao;
 import com.mno.dao.VoluntaryDao;
 import com.mno.model.User;
 import com.mno.model.Voluntary;
 import com.mno.service.VoluntaryService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DESC〈一句话功能简述〉<br>
@@ -54,5 +58,34 @@ public class VoluntaryServiceImpl implements VoluntaryService {
     @Override
     public boolean submit(int userId) {
         return voluntaryDao.submit(userId);
+    }
+
+    @Override
+    public VoluntaryUpdateVo getInfoByUserId(int userId) {
+        Voluntary oneByUserId = voluntaryDao.getOneByUserId(userId);
+        VoluntaryUpdateVo vo = new VoluntaryUpdateVo(oneByUserId);
+        List<Integer> ls = new ArrayList<>();
+        ls.add(voluntaryDao.getSchoolId(1, userId));
+        ls.add(voluntaryDao.getSchoolId(2, userId));
+        ls.add(voluntaryDao.getSchoolId(3, userId));
+        ls.add(voluntaryDao.getSchoolId(4, userId));
+        ls.add(voluntaryDao.getSchoolId(5, userId));
+        ls.add(voluntaryDao.getSchoolId(6, userId));
+        ls.add(voluntaryDao.getSchoolId(7, userId));
+        ls.add(voluntaryDao.getSchoolId(8, userId));
+        ls.add(voluntaryDao.getSchoolId(9, userId));
+        ls.add(voluntaryDao.getSchoolId(10, userId));
+        ls.add(voluntaryDao.getSchoolId(11, userId));
+        ls.add(voluntaryDao.getSchoolId(12, userId));
+        ls.add(voluntaryDao.getSchoolId(13, userId));
+        ls.add(voluntaryDao.getSchoolId(14, userId));
+        ls.add(voluntaryDao.getSchoolId(15, userId));
+        ls.add(voluntaryDao.getSchoolId(16, userId));
+        ls.add(voluntaryDao.getSchoolId(17, userId));
+        ls.add(voluntaryDao.getSchoolId(18, userId));
+        ls.add(voluntaryDao.getSchoolId(19, userId));
+        ls.add(voluntaryDao.getSchoolId(20, userId));
+        vo.setSchoolIds(ls);
+        return vo;
     }
 }

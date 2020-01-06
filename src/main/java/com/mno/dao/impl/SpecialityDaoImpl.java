@@ -5,6 +5,7 @@ import com.mno.dao.SpecialityDao;
 import com.mno.model.Speciality;
 
 import java.util.List;
+
 /**
  * DESC〈一句话功能简述〉<br>
  * 〈〉
@@ -21,8 +22,13 @@ public class SpecialityDaoImpl extends BaseDao<Speciality> implements Speciality
     }
 
     @Override
-    public List<Speciality> getListById(Integer id) {
-        List<Speciality> listData = getListData("select * from speciality where id=?", id);
+    public List<Speciality> getListById(Integer id, Integer userId) {
+        List<Speciality> listData;
+        if (id == 0) {
+            listData = getListData("select * from speciality");
+        } else {
+            listData = getListData("select * from speciality where id=? and userId=?", id, userId);
+        }
         return listData;
     }
 
@@ -43,16 +49,14 @@ public class SpecialityDaoImpl extends BaseDao<Speciality> implements Speciality
 
     @Override
     public boolean updateOne(Speciality speciality) {
-        int iud = iud("update speciality set name=? ,total=? where id=?",speciality.getName(),speciality.getTotal(),speciality.getId());
+        int iud = iud("update speciality set name=? ,total=? where id=?", speciality.getName(), speciality.getTotal(), speciality.getId());
         boolean b = iud > 0 ? true : false;
         return b;
     }
 
 
     public static void main(String[] args) {
-        SpecialityDao specialityDao = new SpecialityDaoImpl();
-        List<Speciality> list = specialityDao.getListById(3);
-        System.out.println(list.get(0).getName());
+
     }
 
 }
