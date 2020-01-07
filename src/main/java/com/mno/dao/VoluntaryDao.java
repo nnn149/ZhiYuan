@@ -9,7 +9,10 @@
  */
 package com.mno.dao;
 
+import com.mno.bean.vo.VoluntarySchoolListVo;
 import com.mno.model.Voluntary;
+
+import java.util.List;
 
 /**
  * DESC〈一句话功能简述〉<br>
@@ -29,4 +32,6 @@ public interface VoluntaryDao {
     boolean submit(int userId);
 
     int getSchoolId(int speciality, int userId);
+
+    List<VoluntarySchoolListVo> schoolList(int userId, int i, int specialityId );
 }

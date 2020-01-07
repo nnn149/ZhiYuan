@@ -9,7 +9,9 @@
  */
 package com.mno.service.impl;
 
+import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
+import com.mno.bean.vo.VoluntarySchoolListVo;
 import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.dao.FactoryDao;
 import com.mno.dao.UserDao;
@@ -87,5 +89,27 @@ public class VoluntaryServiceImpl implements VoluntaryService {
         ls.add(voluntaryDao.getSchoolId(20, userId));
         vo.setSchoolIds(ls);
         return vo;
+    }
+
+    @Override
+    public List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
+        List<VoluntarySchoolListVo> list = new ArrayList<>();
+//        for (int i = 1; i <= 20; i++) {
+//            List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.schoolList(userId, i, voluntarySchoolListDto.getSpeciality());
+//            for (VoluntarySchoolListVo voluntarySchoolListVo : voluntarySchoolListVos) {
+//                if (voluntarySchoolListVo != null) {
+//                    voluntarySchoolListVo.setZhiyuan("第" + i + "志愿");
+//                    list.add(voluntarySchoolListVo);
+//                }
+//            }
+//        }
+        List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.schoolList(userId, voluntarySchoolListDto.getVoluntary(), voluntarySchoolListDto.getSpeciality());
+        for (VoluntarySchoolListVo voluntarySchoolListVo : voluntarySchoolListVos) {
+            if (voluntarySchoolListVo != null) {
+                voluntarySchoolListVo.setZhiyuan("第" + voluntarySchoolListDto.getVoluntary() + "志愿");
+                list.add(voluntarySchoolListVo);
+            }
+        }
+        return list;
     }
 }

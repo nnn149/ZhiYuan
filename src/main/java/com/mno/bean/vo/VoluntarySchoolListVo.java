@@ -1,5 +1,5 @@
 /**
- * FileName: VoluntarySchoolList
+ * FileName: VoluntarySchoolListVo
  * Author:   10418
  * Date:     2020-01-06 22:47
  * Description:
@@ -17,7 +17,7 @@ package com.mno.bean.vo;
  * @create 2020-01-06
  * @since 1.0.0
  */
-public class VoluntarySchoolList {
+public class VoluntarySchoolListVo {
     private int id;
     private String nickname;
     private String username;
@@ -28,8 +28,26 @@ public class VoluntarySchoolList {
     private int totalScore;
     private int rank;
     private String speciality;
+    private boolean tiaoji;
+    private String zhiyuan;
 
-    public VoluntarySchoolList() {
+    public VoluntarySchoolListVo() {
+    }
+
+    public boolean isTiaoji() {
+        return tiaoji;
+    }
+
+    public void setTiaoji(boolean tiaoji) {
+        this.tiaoji = tiaoji;
+    }
+
+    public String getZhiyuan() {
+        return zhiyuan;
+    }
+
+    public void setZhiyuan(String zhiyuan) {
+        this.zhiyuan = zhiyuan;
     }
 
     public int getId() {

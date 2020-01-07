@@ -13,7 +13,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mno.bean.JsonResult;
 import com.mno.bean.PageBean;
 import com.mno.bean.ResultCode;
+import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
+import com.mno.bean.vo.VoluntarySchoolListVo;
 import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.service.FactoryService;
 import com.mno.service.VoluntaryService;
@@ -43,6 +45,19 @@ public class VoluntaryController extends BaseServlet {
         List<VoluntaryListVo> list = new ArrayList<>();
         list.add(oneByUserId);
         return new JsonResult(new PageBean<>(1, list));
+    }
+
+    public JsonResult schoolList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = new String(req.getInputStream().readAllBytes());
+        if (StringUtils.isNullOrEmpty(json)) {
+            return new JsonResult(ResultCode.PARAMS_ERROR);
+        }
+        ObjectMapper om = new ObjectMapper();
+        VoluntarySchoolListDto voluntarySchoolListDto = om.readValue(json, VoluntarySchoolListDto.class);
+        Integer userId = (Integer) req.getSession().getAttribute("userId");
+        List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryService.schoolList(userId, voluntarySchoolListDto);
+        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), voluntarySchoolListVos);
+        return new JsonResult(pg);
     }
 
     public JsonResult info(HttpServletRequest req, HttpServletResponse resp) {

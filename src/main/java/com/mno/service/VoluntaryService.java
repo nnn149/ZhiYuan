@@ -9,9 +9,13 @@
  */
 package com.mno.service;
 
+import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
+import com.mno.bean.vo.VoluntarySchoolListVo;
 import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.model.Voluntary;
+
+import java.util.List;
 
 /**
  * DESC〈一句话功能简述〉<br>
@@ -29,5 +33,7 @@ public interface VoluntaryService {
     boolean submit(int userId);
 
     VoluntaryUpdateVo getInfoByUserId(int userId);
+
+    List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
 
 }

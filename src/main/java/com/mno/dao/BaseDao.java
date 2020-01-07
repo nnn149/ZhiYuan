@@ -169,4 +169,70 @@ public class BaseDao<T> {
         }
         return count;
     }
+
+    public <U> U getOneData(Class clazz, String sql, Object... args) {
+        Connection conn = null;
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        U entity = null;
+        try {
+            conn = MyDbUtil.getConnection();
+            stat = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                stat.setObject(i + 1, args[i]);
+            }
+            rs = stat.executeQuery();
+            if (rs.next()) {
+                entity = (U) clazz.newInstance();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                int columnCount = rsmd.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String key = rsmd.getColumnLabel(i);
+                    Object value = rs.getObject(key);
+                    BeanUtils.setProperty(entity, key, value);
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            MyDbUtil.close(conn, stat, rs);
+        }
+        return entity;
+    }
+
+    public <U> List<U> getListData(Class clazz, String sql, Object... args) {
+        Connection conn = null;
+        PreparedStatement stat = null;
+        ResultSet rs = null;
+        U entity = null;
+        ResultSetMetaData rsmd = null;
+        int columnCount = 0;
+        List<U> list = new ArrayList<>();
+        try {
+            conn = MyDbUtil.getConnection();
+            stat = conn.prepareStatement(sql);
+            for (int i = 0; i < args.length; i++) {
+                stat.setObject(i + 1, args[i]);
+            }
+            rs = stat.executeQuery();
+            while (rs.next()) {
+                entity = (U) clazz.newInstance();
+                rsmd = rs.getMetaData();
+                columnCount = rsmd.getColumnCount();
+                for (int i = 1; i <= columnCount; i++) {
+                    String key = rsmd.getColumnLabel(i);
+                    Object value = rs.getObject(key);
+                    BeanUtils.setProperty(entity, key, value);
+                }
+                list.add(entity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            MyDbUtil.close(conn, stat, rs);
+        }
+        return list;
+
+    }
 }
