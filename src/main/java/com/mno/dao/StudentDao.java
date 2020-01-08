@@ -1,5 +1,6 @@
 package com.mno.dao;
 
+import com.mno.bean.vo.StudentChengjiVo;
 import com.mno.model.Student;
 /**
  * DESC〈一句话功能简述〉<br>
@@ -14,4 +15,6 @@ public interface StudentDao {
     Student getOneById(int id);
 
     Student getOneByUserId(int userid);
+    StudentChengjiVo chengji(int userId);
+
 }

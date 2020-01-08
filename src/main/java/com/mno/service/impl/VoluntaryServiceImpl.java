@@ -137,6 +137,25 @@ public class VoluntaryServiceImpl implements VoluntaryService {
     }
 
     @Override
+    public List<VoluntarySchoolListVo> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
+        List<VoluntarySchoolListVo> list = new ArrayList<>();
+        for (int i = 1; i <= 20; i++) {
+            List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.schoolYiList(userId, i, voluntarySchoolListDto.getSpeciality());
+            for (VoluntarySchoolListVo voluntarySchoolListVo : voluntarySchoolListVos) {
+                if (voluntarySchoolListVo != null) {
+                    voluntarySchoolListVo.setZhiyuan("第" + i + "志愿");
+                    list.add(voluntarySchoolListVo);
+                }
+            }
+        }
+        List list1 = PageUtil.startPage(list, (int) voluntarySchoolListDto.getLimit().getPage(), voluntarySchoolListDto.getLimit().getLimit());
+        if (list1 == null) {
+            list1 = new ArrayList();
+        }
+        return list1;
+    }
+
+    @Override
     public List<VoluntaryAdminListDto> adminList(VoluntaryAdminListDto voluntaryAdminListDto) {
         List<VoluntarySchoolListVo> list = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {

@@ -38,6 +38,8 @@ public interface VoluntaryService {
     VoluntaryUpdateVo getInfoByUserId(int userId);
 
     List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
+    List<VoluntarySchoolListVo> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
+
     List<VoluntaryAdminListDto> adminList( VoluntaryAdminListDto voluntaryAdminListDto);
 
     boolean preAdmission(int id);

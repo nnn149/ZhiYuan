@@ -14,11 +14,20 @@ public class Speciality {
     private Integer userId;
     private String name;
     private Integer total;
+    private Integer zong;
 
     public Speciality( Integer userId, String name, Integer total) {
         this.userId = userId;
         this.name = name;
         this.total = total;
+    }
+
+    public Integer getZong() {
+        return zong;
+    }
+
+    public void setZong(Integer zong) {
+        this.zong = zong;
     }
 
     public Speciality() {

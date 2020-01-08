@@ -108,7 +108,7 @@ public class VoluntaryDaoImpl extends BaseDao<Voluntary> implements VoluntaryDao
     @Override
     public List<VoluntarySchoolListVo> schoolList(int userId, int i, int specialityId) {
         String sql = "SELECT \n" +
-                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
+                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,voluntary.status AS status,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
                 "FROM user,voluntary,student,speciality\n" +
                 "WHERE \n" +
                 "voluntary.userId=user.id\n" +
@@ -124,9 +124,27 @@ public class VoluntaryDaoImpl extends BaseDao<Voluntary> implements VoluntaryDao
     }
 
     @Override
+    public List<VoluntarySchoolListVo> schoolYiList(int userId, int i, int specialityId) {
+        String sql = "SELECT \n" +
+                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,voluntary.status AS status,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
+                "FROM user,voluntary,student,speciality\n" +
+                "WHERE \n" +
+                "voluntary.userId=user.id\n" +
+                "AND \n" +
+                "voluntary.userId=student.userId\n" +
+                "AND\n" +
+                "voluntary.speciality" + i + " IN (SELECT speciality.id FROM speciality WHERE speciality.userId=" + userId + ")\n" +
+                "AND\n" +
+                "voluntary.speciality" + i + "=speciality.id AND voluntary.nowPici=" + i + " " + (specialityId == 0 ? "" : "AND speciality.id=" + specialityId) + " AND voluntary.status='正式录取'\n" +
+                "\n ORDER BY student.rank,student.mathScore DESC";
+        List<VoluntarySchoolListVo> listData = getListData(VoluntarySchoolListVo.class, sql);
+        return listData;
+    }
+
+    @Override
     public List<VoluntarySchoolListVo> adminList(int userId, int i, int specialityId) {
         String sql = "SELECT \n" +
-                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
+                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,voluntary.status AS status,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
                 "FROM user,voluntary,student,speciality\n" +
                 "WHERE \n" +
                 "voluntary.userId=user.id\n" +

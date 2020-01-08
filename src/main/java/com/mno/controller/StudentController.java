@@ -1,6 +1,7 @@
 package com.mno.controller;
 
 import com.mno.bean.JsonResult;
+import com.mno.bean.vo.StudentChengjiVo;
 import com.mno.bean.vo.StudentStuInfoVo;
 import com.mno.service.FactoryService;
 import com.mno.service.StudentService;
@@ -11,12 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudentController extends BaseServlet {
-    StudentService studentService= FactoryService.getStudentService();
-    public JsonResult stuInfo(HttpServletRequest req, HttpServletResponse resp){
+    StudentService studentService = FactoryService.getStudentService();
+
+    public JsonResult stuInfo(HttpServletRequest req, HttpServletResponse resp) {
         Integer userId = (Integer) req.getSession().getAttribute("userId");
-        StudentStuInfoVo student=studentService.getOneByUserId(userId);
+        StudentStuInfoVo student = studentService.getOneByUserId(userId);
         List<StudentStuInfoVo> list = new ArrayList<>();
         list.add(student);
+        return new JsonResult(list);
+    }
+
+    public JsonResult chengji(HttpServletRequest req, HttpServletResponse resp) {
+        Integer userId = (Integer) req.getSession().getAttribute("userId");
+        StudentChengjiVo chengji = studentService.chengji(userId);
+        List<StudentChengjiVo> list = new ArrayList<>();
+        list.add(chengji);
         return new JsonResult(list);
     }
 

@@ -61,6 +61,20 @@ public class VoluntaryController extends BaseServlet {
         return new JsonResult(pg);
     }
 
+    public JsonResult schoolYiList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = new String(req.getInputStream().readAllBytes());
+        if (StringUtils.isNullOrEmpty(json)) {
+            return new JsonResult(ResultCode.PARAMS_ERROR);
+        }
+        ObjectMapper om = new ObjectMapper();
+        VoluntarySchoolListDto voluntarySchoolListDto = om.readValue(json, VoluntarySchoolListDto.class);
+        Integer userId = (Integer) req.getSession().getAttribute("userId");
+        List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryService.schoolYiList(userId, voluntarySchoolListDto);
+        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), voluntarySchoolListVos);
+        return new JsonResult(pg);
+    }
+
+
     public JsonResult adminList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String json = new String(req.getInputStream().readAllBytes());
         if (StringUtils.isNullOrEmpty(json)) {
@@ -72,6 +86,8 @@ public class VoluntaryController extends BaseServlet {
         PageBean<List<VoluntaryAdminListDto>> pg = new PageBean<>(voluntaryAdminListVos.size(), voluntaryAdminListVos);
         return new JsonResult(pg);
     }
+
+
 
     public JsonResult info(HttpServletRequest req, HttpServletResponse resp) {
         Integer userId = Integer.parseInt(req.getParameter("userId"));
@@ -129,6 +145,19 @@ public class VoluntaryController extends BaseServlet {
             return new JsonResult(ResultCode.UNKNOWN_ERROR);
         }
 
+    }
+
+    public JsonResult pizhunList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = new String(req.getInputStream().readAllBytes());
+        if (StringUtils.isNullOrEmpty(json)) {
+            return new JsonResult(ResultCode.PARAMS_ERROR);
+        }
+        ObjectMapper om = new ObjectMapper();
+        List<Integer> ids = om.readValue(json, List.class);
+        for (int id : ids) {
+            voluntaryService.pizhun(id);
+        }
+        return new JsonResult();
     }
 
     public JsonResult reject(HttpServletRequest req, HttpServletResponse resp) {

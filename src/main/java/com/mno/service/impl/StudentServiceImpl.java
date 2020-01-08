@@ -1,5 +1,6 @@
 package com.mno.service.impl;
 
+import com.mno.bean.vo.StudentChengjiVo;
 import com.mno.bean.vo.StudentStuInfoVo;
 import com.mno.dao.FactoryDao;
 import com.mno.dao.StudentDao;
@@ -33,5 +34,10 @@ public class StudentServiceImpl implements StudentService {
         User user=userDao.getOneById(userid);
         studentStuInfoVo.setNickname(user.getNickname());
         return studentStuInfoVo;
+    }
+
+    @Override
+    public StudentChengjiVo chengji(int userId) {
+        return studentDao.chengji(userId);
     }
 }
