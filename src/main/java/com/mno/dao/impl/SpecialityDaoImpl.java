@@ -33,6 +33,22 @@ public class SpecialityDaoImpl extends BaseDao<Speciality> implements Speciality
     }
 
     @Override
+    public boolean lessTotal(int id) {
+        int total = (int) getOneColumn("select total from speciality where id=?", id);
+        if (total <= 0) {
+            return false;
+        } else {
+            int iud = iud("update speciality set total=total-1 where id=?", id);
+            if (iud > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    }
+
+    @Override
     public int insertOne(Speciality speciality) {
 
         return iud("insert into speciality(userId,name,total) values(?,?,?)", speciality.getUserId()

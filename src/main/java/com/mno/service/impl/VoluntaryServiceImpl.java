@@ -9,16 +9,19 @@
  */
 package com.mno.service.impl;
 
+import com.mno.bean.dto.VoluntaryAdminListDto;
 import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
 import com.mno.bean.vo.VoluntarySchoolListVo;
 import com.mno.bean.vo.VoluntaryUpdateVo;
 import com.mno.dao.FactoryDao;
+import com.mno.dao.SpecialityDao;
 import com.mno.dao.UserDao;
 import com.mno.dao.VoluntaryDao;
 import com.mno.model.User;
 import com.mno.model.Voluntary;
 import com.mno.service.VoluntaryService;
+import com.mno.util.PageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +36,7 @@ import java.util.List;
  */
 public class VoluntaryServiceImpl implements VoluntaryService {
     VoluntaryDao voluntaryDao = FactoryDao.getVoluntaryDao();
+    SpecialityDao specialityDao = FactoryDao.getSpecialityDao();
     UserDao userDao = FactoryDao.getUserDao();
 
     @Override
@@ -59,7 +63,22 @@ public class VoluntaryServiceImpl implements VoluntaryService {
 
     @Override
     public boolean submit(int userId) {
-        return voluntaryDao.submit(userId);
+        return voluntaryDao.updateStatusByUserId(userId, "已提交");
+    }
+
+    @Override
+    public boolean reject(int id) {
+        if (voluntaryDao.isNext(id)) {
+            voluntaryDao.updateNext(id);
+        } else {
+            voluntaryDao.updateStatusById(id, "未录取");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean pizhun(int id) {
+        return voluntaryDao.updateStatusById(id, "正式录取");
     }
 
     @Override
@@ -110,6 +129,57 @@ public class VoluntaryServiceImpl implements VoluntaryService {
                 list.add(voluntarySchoolListVo);
             }
         }
-        return list;
+        List list1 = PageUtil.startPage(list, (int) voluntarySchoolListDto.getLimit().getPage(), voluntarySchoolListDto.getLimit().getLimit());
+        if (list1 == null) {
+            list1 = new ArrayList();
+        }
+        return list1;
+    }
+
+    @Override
+    public List<VoluntaryAdminListDto> adminList(VoluntaryAdminListDto voluntaryAdminListDto) {
+        List<VoluntarySchoolListVo> list = new ArrayList<>();
+        for (int i = 1; i <= 20; i++) {
+            List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.adminList(voluntaryAdminListDto.getSchoolId(), i, voluntaryAdminListDto.getSpeciality());
+            for (VoluntarySchoolListVo voluntarySchoolListVo : voluntarySchoolListVos) {
+                if (voluntarySchoolListVo != null) {
+                    voluntarySchoolListVo.setZhiyuan("第" + i + "志愿");
+                    list.add(voluntarySchoolListVo);
+                }
+            }
+        }
+        List list1 = PageUtil.startPage(list, (int) voluntaryAdminListDto.getLimit().getPage(), voluntaryAdminListDto.getLimit().getLimit());
+        if (list1 == null) {
+            list1 = new ArrayList();
+        }
+        return list1;
+    }
+
+    @Override
+    public boolean preAdmission(int id) {
+        if (specialityDao.lessTotal(id)) {
+            return voluntaryDao.updateStatusById(id, "预录取");
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean tiaoji(int id, int specialityId) {
+        int nowPici = voluntaryDao.getNowPici(id);
+        if (nowPici > 0 && nowPici <= 20) {
+            if (specialityDao.lessTotal(specialityId)) {
+                if (voluntaryDao.updateSpeciality(id, nowPici, specialityId)) {
+                    voluntaryDao.updateStatusById(id, "调剂");
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

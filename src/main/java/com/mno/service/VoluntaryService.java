@@ -9,6 +9,7 @@
  */
 package com.mno.service;
 
+import com.mno.bean.dto.VoluntaryAdminListDto;
 import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
 import com.mno.bean.vo.VoluntarySchoolListVo;
@@ -32,8 +33,15 @@ public interface VoluntaryService {
 
     boolean submit(int userId);
 
+    boolean reject(int id);
+    boolean pizhun(int id);
     VoluntaryUpdateVo getInfoByUserId(int userId);
 
     List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
+    List<VoluntaryAdminListDto> adminList( VoluntaryAdminListDto voluntaryAdminListDto);
+
+    boolean preAdmission(int id);
+
+    boolean tiaoji(int id, int specialityId);
 
 }

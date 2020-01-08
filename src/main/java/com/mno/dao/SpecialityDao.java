@@ -23,4 +23,6 @@ public interface SpecialityDao {
     boolean updateOne(Speciality speciality);
 
     List<Speciality> getListById(Integer id,Integer userId);
+
+    boolean lessTotal(int id);
 }

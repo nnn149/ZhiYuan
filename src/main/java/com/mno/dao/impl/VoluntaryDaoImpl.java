@@ -54,8 +54,44 @@ public class VoluntaryDaoImpl extends BaseDao<Voluntary> implements VoluntaryDao
     }
 
     @Override
-    public boolean submit(int userId) {
-        int iud = iud("update voluntary set status='已提交' where userId=?", userId);
+    public boolean updateStatusByUserId(int userId, String status) {
+        int iud = iud("update voluntary set status=? where userId=?", status, userId);
+        if (iud > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean updateStatusById(int id, String status) {
+        int iud = iud("update voluntary set status=? where id=?", status, id);
+        if (iud > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isNext(int id) {
+        int nowPici = (int) getOneColumn("select nowPici from voluntary where id=?", id);
+        if (nowPici > 20) {
+            return false;
+        } else {
+            nowPici++;
+        }
+        int speciality = (int) getOneColumn("select speciality" + nowPici + " from voluntary where id=?", id);
+        if (speciality == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean updateNext(int id) {
+        int iud = iud("update voluntary set nowPici=nowPici+1 where id=?", id);
         if (iud > 0) {
             return true;
         } else {
@@ -85,5 +121,40 @@ public class VoluntaryDaoImpl extends BaseDao<Voluntary> implements VoluntaryDao
                 "\n ORDER BY student.rank,student.mathScore DESC";
         List<VoluntarySchoolListVo> listData = getListData(VoluntarySchoolListVo.class, sql);
         return listData;
+    }
+
+    @Override
+    public List<VoluntarySchoolListVo> adminList(int userId, int i, int specialityId) {
+        String sql = "SELECT \n" +
+                "voluntary.tiaoji" + i + " AS tiaoji,voluntary.id AS id,user.nickname AS nickname,user.username AS username,user.remark AS remark,student.mathScore AS mathScore,student.englishScore AS englishScore,student.majorScore AS majorScore,student.totalScore AS totalScore,student.rank AS `rank`,speciality.name AS speciality\n" +
+                "FROM user,voluntary,student,speciality\n" +
+                "WHERE \n" +
+                "voluntary.userId=user.id\n" +
+                "AND \n" +
+                "voluntary.userId=student.userId\n" +
+                "AND\n" +
+                "voluntary.speciality" + i + " IN (SELECT speciality.id FROM speciality WHERE speciality.userId=" + userId + ")\n" +
+                "AND\n" +
+                "voluntary.speciality" + i + "=speciality.id AND voluntary.nowPici=" + i + " " + (specialityId == 0 ? "" : "AND speciality.id=" + specialityId) + "  AND (voluntary.status='预录取' or voluntary.status='调剂') \n" +
+                "\n ORDER BY student.rank,student.mathScore DESC";
+
+        List<VoluntarySchoolListVo> listData = getListData(VoluntarySchoolListVo.class, sql);
+        return listData;
+    }
+
+    @Override
+    public int getNowPici(int id) {
+        int nowPici = (int) getOneColumn("select nowPici from voluntary where id=?", id);
+        return nowPici;
+    }
+
+    @Override
+    public boolean updateSpeciality(int id, int specialityIndex, int specialityId) {
+        int iud = iud("update voluntary set speciality" + specialityIndex + "=? where id=?", specialityId, id);
+        if (iud > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

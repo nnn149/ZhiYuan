@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mno.bean.JsonResult;
 import com.mno.bean.PageBean;
 import com.mno.bean.ResultCode;
+import com.mno.bean.dto.VoluntaryAdminListDto;
 import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
 import com.mno.bean.vo.VoluntarySchoolListVo;
@@ -57,6 +58,18 @@ public class VoluntaryController extends BaseServlet {
         Integer userId = (Integer) req.getSession().getAttribute("userId");
         List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryService.schoolList(userId, voluntarySchoolListDto);
         PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), voluntarySchoolListVos);
+        return new JsonResult(pg);
+    }
+
+    public JsonResult adminList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String json = new String(req.getInputStream().readAllBytes());
+        if (StringUtils.isNullOrEmpty(json)) {
+            return new JsonResult(ResultCode.PARAMS_ERROR);
+        }
+        ObjectMapper om = new ObjectMapper();
+        VoluntaryAdminListDto voluntaryAdminListDto = om.readValue(json, VoluntaryAdminListDto.class);
+        List<VoluntaryAdminListDto> voluntaryAdminListVos = voluntaryService.adminList(voluntaryAdminListDto);
+        PageBean<List<VoluntaryAdminListDto>> pg = new PageBean<>(voluntaryAdminListVos.size(), voluntaryAdminListVos);
         return new JsonResult(pg);
     }
 
@@ -106,5 +119,43 @@ public class VoluntaryController extends BaseServlet {
             return new JsonResult(ResultCode.UNKNOWN_ERROR);
         }
 
+    }
+
+    public JsonResult pizhun(HttpServletRequest req, HttpServletResponse resp) {
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        if (voluntaryService.pizhun(id)) {
+            return new JsonResult();
+        } else {
+            return new JsonResult(ResultCode.UNKNOWN_ERROR);
+        }
+
+    }
+
+    public JsonResult reject(HttpServletRequest req, HttpServletResponse resp) {
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        if (voluntaryService.reject(id)) {
+            return new JsonResult();
+        } else {
+            return new JsonResult(ResultCode.UNKNOWN_ERROR);
+        }
+    }
+
+    public JsonResult preAdmission(HttpServletRequest req, HttpServletResponse resp) {
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        if (voluntaryService.preAdmission(id)) {
+            return new JsonResult();
+        } else {
+            return new JsonResult(ResultCode.ZHUANYE_LESS);
+        }
+    }
+
+    public JsonResult tiaoji(HttpServletRequest req, HttpServletResponse resp) {
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        Integer specialityId = Integer.parseInt(req.getParameter("specialityId"));
+        if (voluntaryService.tiaoji(id, specialityId)) {
+            return new JsonResult();
+        } else {
+            return new JsonResult(ResultCode.ZHUANYE_LESS);
+        }
     }
 }

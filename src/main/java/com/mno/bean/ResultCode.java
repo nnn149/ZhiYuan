@@ -62,6 +62,10 @@ public enum ResultCode {
      */
     ZHIYUAN_ERROR(522, "存在相同学校"),
     /**
+     * 存在相同学校
+     */
+    ZHUANYE_LESS(523, "专业人数已满"),
+    /**
      * 未知的错误
      */
     UNKNOWN_ERROR(500, "未知错误");

@@ -29,9 +29,21 @@ public interface VoluntaryDao {
 
     boolean updateOne(Voluntary voluntary);
 
-    boolean submit(int userId);
+    boolean updateStatusByUserId(int userId, String status);
+
+    boolean updateStatusById(int id, String status);
+
+    boolean isNext(int id);
+
+    boolean updateNext(int id);
 
     int getSchoolId(int speciality, int userId);
 
     List<VoluntarySchoolListVo> schoolList(int userId, int i, int specialityId );
+
+    List<VoluntarySchoolListVo> adminList(int userId, int i, int specialityId );
+
+    int getNowPici(int id);
+
+    boolean updateSpeciality(int id,int specialityIndex, int specialityId);
 }
