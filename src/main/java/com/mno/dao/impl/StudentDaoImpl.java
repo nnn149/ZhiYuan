@@ -56,4 +56,11 @@ public class StudentDaoImpl extends BaseDao<Student> implements StudentDao {
         }
         return vo;
     }
+
+    @Override
+    public int getRenByChengji(int min, int max) {
+        long num = (Long) getOneColumn("select count(*) from student where totalScore>=? and totalScore<?", min, max);
+        return (int) num;
+    }
+
 }

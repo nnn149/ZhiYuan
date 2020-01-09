@@ -17,4 +17,6 @@ public interface StudentDao {
     Student getOneByUserId(int userid);
     StudentChengjiVo chengji(int userId);
 
+    int getRenByChengji(int min, int max);
+
 }

@@ -9,6 +9,9 @@ import com.mno.model.Student;
 import com.mno.model.User;
 import com.mno.service.StudentService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentServiceImpl implements StudentService {
     StudentDao studentDao= FactoryDao.getStudentDao();
     UserDao userDao=FactoryDao.getUserDao();
@@ -40,4 +43,14 @@ public class StudentServiceImpl implements StudentService {
     public StudentChengjiVo chengji(int userId) {
         return studentDao.chengji(userId);
     }
+
+    @Override
+    public List<Integer> getRenByChengji() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 200; i < 600; i += 25) {
+            list.add(studentDao.getRenByChengji(i, i + 25));
+        }
+        return list;
+    }
+
 }

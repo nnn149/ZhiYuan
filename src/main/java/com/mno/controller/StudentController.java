@@ -30,4 +30,7 @@ public class StudentController extends BaseServlet {
         return new JsonResult(list);
     }
 
+    public JsonResult chengjiCharts(HttpServletRequest req, HttpServletResponse resp) {
+        return new JsonResult(studentService.getRenByChengji());
+    }
 }
