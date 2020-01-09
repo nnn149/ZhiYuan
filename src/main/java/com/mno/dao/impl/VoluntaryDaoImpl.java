@@ -167,6 +167,12 @@ public class VoluntaryDaoImpl extends BaseDao<Voluntary> implements VoluntaryDao
     }
 
     @Override
+    public int getSpecialityPici(int id, int nowPici) {
+        int specialityId = (int) getOneColumn("select speciality" + nowPici + " from voluntary where id=?", id);
+        return specialityId;
+    }
+
+    @Override
     public boolean updateSpeciality(int id, int specialityIndex, int specialityId) {
         int iud = iud("update voluntary set speciality" + specialityIndex + "=? where id=?", specialityId, id);
         if (iud > 0) {

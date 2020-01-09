@@ -9,6 +9,7 @@
  */
 package com.mno.service.impl;
 
+import com.mno.bean.PageBean;
 import com.mno.bean.dto.VoluntaryAdminListDto;
 import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
@@ -111,7 +112,7 @@ public class VoluntaryServiceImpl implements VoluntaryService {
     }
 
     @Override
-    public List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
+    public PageBean<List<VoluntarySchoolListVo>> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
         List<VoluntarySchoolListVo> list = new ArrayList<>();
 //        for (int i = 1; i <= 20; i++) {
 //            List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.schoolList(userId, i, voluntarySchoolListDto.getSpeciality());
@@ -133,11 +134,12 @@ public class VoluntaryServiceImpl implements VoluntaryService {
         if (list1 == null) {
             list1 = new ArrayList();
         }
-        return list1;
+        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), list1);
+        return pg;
     }
 
     @Override
-    public List<VoluntarySchoolListVo> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
+    public PageBean<List<VoluntarySchoolListVo>> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto) {
         List<VoluntarySchoolListVo> list = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
             List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.schoolYiList(userId, i, voluntarySchoolListDto.getSpeciality());
@@ -152,11 +154,12 @@ public class VoluntaryServiceImpl implements VoluntaryService {
         if (list1 == null) {
             list1 = new ArrayList();
         }
-        return list1;
+        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(list.size(), list1);
+        return pg;
     }
 
     @Override
-    public List<VoluntaryAdminListDto> adminList(VoluntaryAdminListDto voluntaryAdminListDto) {
+    public PageBean<List<VoluntaryAdminListDto>> adminList(VoluntaryAdminListDto voluntaryAdminListDto) {
         List<VoluntarySchoolListVo> list = new ArrayList<>();
         for (int i = 1; i <= 20; i++) {
             List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryDao.adminList(voluntaryAdminListDto.getSchoolId(), i, voluntaryAdminListDto.getSpeciality());
@@ -171,12 +174,15 @@ public class VoluntaryServiceImpl implements VoluntaryService {
         if (list1 == null) {
             list1 = new ArrayList();
         }
-        return list1;
+        PageBean<List<VoluntaryAdminListDto>> pg = new PageBean<>(list.size(), list1);
+        return pg;
     }
 
     @Override
     public boolean preAdmission(int id) {
-        if (specialityDao.lessTotal(id)) {
+        int nowPici = voluntaryDao.getNowPici(id);
+        int specialityPici = voluntaryDao.getSpecialityPici(id, nowPici);
+        if (specialityDao.lessTotal(specialityPici)) {
             return voluntaryDao.updateStatusById(id, "预录取");
         } else {
             return false;

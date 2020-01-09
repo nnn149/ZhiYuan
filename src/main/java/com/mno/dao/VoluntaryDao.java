@@ -39,12 +39,15 @@ public interface VoluntaryDao {
 
     int getSchoolId(int speciality, int userId);
 
-    List<VoluntarySchoolListVo> schoolList(int userId, int i, int specialityId );
-    List<VoluntarySchoolListVo> schoolYiList(int userId, int i, int specialityId );
+    List<VoluntarySchoolListVo> schoolList(int userId, int i, int specialityId);
 
-    List<VoluntarySchoolListVo> adminList(int userId, int i, int specialityId );
+    List<VoluntarySchoolListVo> schoolYiList(int userId, int i, int specialityId);
+
+    List<VoluntarySchoolListVo> adminList(int userId, int i, int specialityId);
 
     int getNowPici(int id);
 
-    boolean updateSpeciality(int id,int specialityIndex, int specialityId);
+    int getSpecialityPici(int id, int nowPici);
+
+    boolean updateSpeciality(int id, int specialityIndex, int specialityId);
 }

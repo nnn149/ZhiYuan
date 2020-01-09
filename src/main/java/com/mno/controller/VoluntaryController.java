@@ -56,9 +56,8 @@ public class VoluntaryController extends BaseServlet {
         ObjectMapper om = new ObjectMapper();
         VoluntarySchoolListDto voluntarySchoolListDto = om.readValue(json, VoluntarySchoolListDto.class);
         Integer userId = (Integer) req.getSession().getAttribute("userId");
-        List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryService.schoolList(userId, voluntarySchoolListDto);
-        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), voluntarySchoolListVos);
-        return new JsonResult(pg);
+        PageBean<List<VoluntarySchoolListVo>> listPageBean = voluntaryService.schoolList(userId, voluntarySchoolListDto);
+        return new JsonResult(listPageBean);
     }
 
     public JsonResult schoolYiList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -69,9 +68,8 @@ public class VoluntaryController extends BaseServlet {
         ObjectMapper om = new ObjectMapper();
         VoluntarySchoolListDto voluntarySchoolListDto = om.readValue(json, VoluntarySchoolListDto.class);
         Integer userId = (Integer) req.getSession().getAttribute("userId");
-        List<VoluntarySchoolListVo> voluntarySchoolListVos = voluntaryService.schoolYiList(userId, voluntarySchoolListDto);
-        PageBean<List<VoluntarySchoolListVo>> pg = new PageBean<>(voluntarySchoolListVos.size(), voluntarySchoolListVos);
-        return new JsonResult(pg);
+        PageBean<List<VoluntarySchoolListVo>> listPageBean = voluntaryService.schoolYiList(userId, voluntarySchoolListDto);
+        return new JsonResult(listPageBean);
     }
 
 
@@ -82,11 +80,9 @@ public class VoluntaryController extends BaseServlet {
         }
         ObjectMapper om = new ObjectMapper();
         VoluntaryAdminListDto voluntaryAdminListDto = om.readValue(json, VoluntaryAdminListDto.class);
-        List<VoluntaryAdminListDto> voluntaryAdminListVos = voluntaryService.adminList(voluntaryAdminListDto);
-        PageBean<List<VoluntaryAdminListDto>> pg = new PageBean<>(voluntaryAdminListVos.size(), voluntaryAdminListVos);
-        return new JsonResult(pg);
+        PageBean<List<VoluntaryAdminListDto>> listPageBean = voluntaryService.adminList(voluntaryAdminListDto);
+        return new JsonResult(listPageBean);
     }
-
 
 
     public JsonResult info(HttpServletRequest req, HttpServletResponse resp) {

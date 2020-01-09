@@ -9,6 +9,7 @@
  */
 package com.mno.service;
 
+import com.mno.bean.PageBean;
 import com.mno.bean.dto.VoluntaryAdminListDto;
 import com.mno.bean.dto.VoluntarySchoolListDto;
 import com.mno.bean.vo.VoluntaryListVo;
@@ -37,10 +38,10 @@ public interface VoluntaryService {
     boolean pizhun(int id);
     VoluntaryUpdateVo getInfoByUserId(int userId);
 
-    List<VoluntarySchoolListVo> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
-    List<VoluntarySchoolListVo> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
+    PageBean<List<VoluntarySchoolListVo>> schoolList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
+    PageBean<List<VoluntarySchoolListVo>> schoolYiList(int userId, VoluntarySchoolListDto voluntarySchoolListDto);
 
-    List<VoluntaryAdminListDto> adminList( VoluntaryAdminListDto voluntaryAdminListDto);
+    PageBean<List<VoluntaryAdminListDto>> adminList( VoluntaryAdminListDto voluntaryAdminListDto);
 
     boolean preAdmission(int id);
 
